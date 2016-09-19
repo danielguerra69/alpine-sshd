@@ -1,10 +1,9 @@
-FROM alpine:edge
+FROM alpine
 MAINTAINER Daniel Guerra <daniel.guerra69@gmail.com>
 
 RUN apk add --update openssh
-
-RUN ssh-keygen -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
-
-RUN sed -i "s/UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config && sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config && sed -i "s/PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config && sed -i "s/#AuthorizedKeysFile/AuthorizedKeysFile/g" /etc/ssh/sshd_config
-
+ADD docker-entrypoint.sh /usr/sbin
+#make sure we get fresh keys
+RUN rm -rf /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_dsa_key
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["/usr/sbin/sshd","-D"]

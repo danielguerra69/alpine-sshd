@@ -1,36 +1,38 @@
-Alipne ssh server
-
-### Dependencies
-
-* [![2.0.0](https://badge.imagelayers.io/alpine.svg)](https://imagelayers.io/?images=alpine:edge 'edge') alpine:edge
-
-### Image size
-
-[![Latest](https://badge.imagelayers.io/danielguerra/apline-sshd.svg)](https://imagelayers.io/?images=danielguerra/alpine-sshd:latest 'latest') danielguerra/alpine-sshd
+Alpine ssh server
 
 ### Instructions
 
-create a ssh volume
+# Key based usage (prefered)
+
+Copy the id_rsa.pub from your workstation to your dockerhost.
+On the dockerhost create a volume to keep your authorized_keys.
 ```bash
-$ docker create -v /root/.ssh --name ssh-container danielguerra/ssh-container /bin/true
+tar cv --files-from /dev/null | docker import - scratch
+docker create -v /root/.ssh --name ssh-container scratch /bin/true
+docker cp id_rsa.pub ssh-container:/root/.ssh/authorized_keys
 ```
-create your own keys
+
+For ssh key forwarding use ssh-agent on your workstation.
 ```bash
-$ docker run --volumes-from ssh-container alpine:edge ssh-keygen -q
+ssh-agent
+ssh-add id_rsa
 ```
-add your pub key to authorized_keys file
+
+Then the start sshd service on the dockerhost (check the tags for alpine versions)
 ```bash
-$ docker run --volumes-from ssh-container alpine:edge cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd --volumes-from ssh-container  -d danielguerra/alpine-sshd
 ```
-create a copy in your directory (pwd)
+
+# Password based
+
 ```bash
-$ docker run --volumes-from ssh-container -v $(pwd):/backup alpine:edge cp -R /root/.ssh/* /backup
+docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd -d danielguerra/alpine-sshd
+docker exec -ti docker-sshd passwd
 ```
-start ssh server
+
+# From your workstation
+
+ssh to your new docker environment, with an agent -i option is not needed
 ```bash
-docker run -d -p 9022:22 --volumes-from ssh-container --name=alpine-sshd --hostname=alpine-sshd danielguerra/alpine-sshd
- ```
- ssh to your server
- ```bash
- ssh -i id_rsa -p 9022 root@<dockerhost>
- ```
+ssh -p 4848 -i id_rsa root@<dockerhost>
+```
