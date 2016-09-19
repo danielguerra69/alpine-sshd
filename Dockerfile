@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.2
 MAINTAINER Daniel Guerra <daniel.guerra69@gmail.com>
 
 RUN apk add --update openssh
