@@ -1,8 +1,8 @@
-Alpine ssh server
+# Alpine ssh server
 
-### Instructions
+## Instructions
 
-# Key based usage (prefered)
+### Key based usage (prefered)
 
 Copy the id_rsa.pub from your workstation to your dockerhost.
 On the dockerhost create a volume to keep your authorized_keys.
@@ -23,14 +23,14 @@ Then the start sshd service on the dockerhost (check the tags for alpine version
 docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd --volumes-from ssh-container  -d danielguerra/alpine-sshd
 ```
 
-# Password based
+### Password based
 
 ```bash
 docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd -d danielguerra/alpine-sshd
 docker exec -ti docker-sshd passwd
 ```
 
-# From your workstation
+### From your workstation
 
 ssh to your new docker environment, with an agent -i option is not needed
 ```bash
