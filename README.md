@@ -8,7 +8,7 @@
 
 ### Use a sample authorized_keys in the container
 
-docker run -dtP -e "AUTHORIZED_KEYS=`cat ~/.ssh/authorized_keys`" danielguerra/alpine-sshd
+```docker run -dtP -e "AUTHORIZED_KEYS=`cat ~/.ssh/authorized_keys`" danielguerra/alpine-sshd```
 
 ### Use a container volume
 
