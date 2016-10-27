@@ -14,4 +14,12 @@ if [ ! -d "/var/run/sshd" ]; then
   mkdir -p /var/run/sshd
 fi
 
+# Prepare authorization_keys file from environment variable
+if [ ! -z "$AUTHORIZED_KEYS" ]; then
+  echo "Creating /root/.ssh/authorized_keys file..."
+
+  mkdir -p /root/.ssh
+  echo "$AUTHORIZED_KEYS" > /root/.ssh/authorized_keys
+fi
+
 exec "$@"
