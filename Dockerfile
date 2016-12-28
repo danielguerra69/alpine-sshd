@@ -1,4 +1,4 @@
-FROM alpine
+FROM alpine:3.5
 MAINTAINER Daniel Guerra <daniel.guerra69@gmail.com>
 
 # add openssh and clean
