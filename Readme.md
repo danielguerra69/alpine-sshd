@@ -32,7 +32,7 @@ docker exec -ti docker-sshd passwd
 
 ### From your workstation
 
-ssh to your new docker environment, with an agent -i option is not needed
+ssh to your new docker environment, with an agent the -i option is not needed
 ```bash
 ssh -p 4848 -i id_rsa root@<dockerhost>
 ```
