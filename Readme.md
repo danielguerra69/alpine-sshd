@@ -27,7 +27,7 @@ docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd --volumes-from s
 
 ```bash
 docker run -p 4848:22 --name alpine-sshd --hostname alpine-sshd -d danielguerra/alpine-sshd
-docker exec -ti docker-sshd passwd
+docker exec -ti alpine-sshd passwd
 ```
 
 ### From your workstation
